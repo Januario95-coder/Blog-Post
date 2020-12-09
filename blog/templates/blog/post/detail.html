@@ -1,0 +1,93 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% load blog_tags %}
+
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+	<h1>{{ post.title }}</h1>
+	<div class="image-author-name">
+		<div class="image-author-name-left">
+			<img src="{{ post.profile_image.url }}">
+		</div>
+		<div class="image-author-name-right">
+			<p>
+				Published {{ post.publish }} by
+				<a href="#">
+					{{ post.author.first_name }}
+					{{ post.author.last_name }}
+				</a>
+			</p>
+		</div>
+	</div>
+	{{ post.body|markdown|safe }}
+
+	<div class="comment-share">
+		<p class="share-post" style="width:140px;">
+			<a href='{% url "blog:post_share" post.id %}'>
+				<i class="fas fa-share-alt"></i> Share this post
+			</a>
+		</p>
+
+
+
+		<h4>Similar posts</h4>
+		{% for post in similar_posts %}
+			<p>
+				<a class="post-title-similar" href="{{ post.get_absolute_url }}"
+					style="text-decoration: none;
+						   color: #6bbbc9;"
+				>
+					{{ post.title }}
+				</a>
+			</p>
+		{% empty %}
+			<h4>There are no similar posts yet.</h4>
+		{% endfor %}
+
+
+		{% with comments.count as total_comments %}
+			<h4>
+				{{ total_comments }} comment{{ total_comments|pluralize }}
+			</h4>
+		{% endwith %}
+
+
+
+		{% for comment in comments %}
+			<div class="comment" style="padding:10px;
+									background:#bbcca2;
+									border-radius:5px;
+									margin-bottom: 6px;">
+				<p class="info">
+					Comment {{ forloop.counter }} by {{ comment.name }}
+					{{ comment.created }}
+				</p>
+				{{ comment.body|linebreaks }}
+			</div>
+		{% empty %}
+			<p>There are not comments yet.
+		{% endfor %}
+
+
+		{% if new_comment %}
+			<h4>Your comment has been added.</h4>
+		{% else %}
+			<h4>Add a new comment</h4>
+			<div class="card" style="margin:0;width:400px;">
+				<div class="card-body">
+					<form action="." method="post">
+						{{ comment_form|crispy }}
+						{% csrf_token %}
+						<br>
+						<input type="submit" value="Add comment">
+					</form>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+
+
+
+{% endblock %}

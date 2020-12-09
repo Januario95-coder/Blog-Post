@@ -1,0 +1,126 @@
+{% load static %}
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+<!ENCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}Posts{% endblock %}</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<link = rel="stylesheet" href='{% static "css/blog.css" %}'>
+		<script src='{% static "css/jquery-3.5.1.js" %}'></script>
+	</head>
+	<body>
+
+		<div class="container">
+
+			<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+<!--			 	<a class="navbar-brand" href="{% url "blog:post_list" %}">Homepage</a> -->
+			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			    	<span class="navbar-toggler-icon"></span>
+			  	</button>
+			  	<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			    	<ul class="navbar-nav">
+			      		<li class="nav-item">
+			        		<a class="nav-link" href="{% url "blog:post_list" %}">Homepage</a>
+			      		</li>
+			      		<li class="nav-item">
+			        		<a class="nav-link" href="#">Services</a>
+			      		</li>
+			      		<li class="nav-item">
+			        		<a class="nav-link" href="#">About</a>
+			      		</li>
+			      		<form class="nav-item" action="." method="get">
+		      				{{ search_form.query }}
+		      				<input class="submission" type="submit" value="Search">
+		      			</form>
+			    	</ul>
+			  	</div>
+			</nav>
+
+<!--
+			<ul class="ul-header">
+				<li class="toggle-menu">&#9776;</li>
+				<li class="list-item">
+					<a href='{% url "blog:post_list" %}'>
+						Homepage
+					</a>
+				</li>
+				<li class="list-item">News</li>
+				<li class="list-item">Services</li>
+				<li class="list-item">About</li>
+				<li class="list-item list-item-form">
+					<form action="." method="get">
+						{{ search_form.query }}
+						<input class="submission" type="submit" value="Search">
+					</form>
+				</li>
+			</ul> -->
+
+			<div class="main">
+				<div class="main-left">
+					<h2>Welcome, {{ user.username|default:'Guest' }}</h2>
+					{% if user.is_authenticated %}
+						<p>This is my blog. I have written {% written_posts %} posts.</p
+						<p>
+							<a href='{% url "blog:post_feed" %}'>
+								Subscribe to my RSS feed
+							</a>
+						</p>
+
+						<h4 style="border-bottom: 2px solid #ccc;">Latest posts</h4>
+						{% show_latest_posts 4 %}
+
+						<h4>Most commented posts</h3>
+						{% get_most_commented_posts as most_commented_posts %}
+						<ul style="list-style: none;" class="latest-and-most-commented">
+							{% for post in most_commented_posts %}
+								<li style="
+									color: #6bbbc9;
+									margin-bottom: 10px;
+									line-height: 18px;
+									border-bottom: 1px solid #ccc;
+								">
+									<a href="{{ post.get_absolute_url }}">
+										{{ post.title }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+
+				<div class="main-right">
+					{% if query %}
+						<div>
+							<h4>Posts containing <b><em>{{ query }}</b></em></></h4>
+							<h5>
+								{% with results.count as total_results %}
+									Found {{ total_results }} result{{ total_results|pluralize }}
+								{% endwith %}
+							</h5>
+							{% for post in results %}
+								<h5 class="post-searched">
+									<a href="{{ post.get_absolute_url }}">
+										{{ post.title }}
+									</a>
+								</h5>
+							{% empty %}
+								<p>There are no results for your search.</p>
+							{% endfor %}
+						</div>
+					{% else %}
+						{% block content %}{% endblock %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+
+<!--		<script src='{% static "css/main.js" %}'></script> -->
+	</body>
+</html>

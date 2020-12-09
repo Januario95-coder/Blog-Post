@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Share {{ post.title }}{% endblock %}
+
+{% block content %}
+	{% if sent %}
+		<h1>Email successfully sent</h1>
+		<p>
+			<b><em><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></em></b> was successfully sent to 
+			   {{ form.cleaned_data.to }}
+		</p>
+	{% else %}
+		<h1>Share <b><em>{{ post.title }}</em></b> by email</h1>
+		<div class="card">
+			<div class="card-body">
+				<form action="." method="post">
+					<div class="form-group">
+						{{ form.name|as_crispy_field }}
+					</div>
+					<div class="form-group">
+						{{ form.email|as_crispy_field }}
+					</div>
+					<div class="form-group">
+						{{ form.to|as_crispy_field }}
+					</div>
+					<div class="form-group">
+						{{ form.comments|as_crispy_field }}
+					</div>
+					{% csrf_token %}
+					<input type="submit" value="Share post">
+				</form>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

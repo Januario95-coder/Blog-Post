@@ -1,0 +1,16 @@
+<ul class="latest-and-most-commented" style="
+	list-style: none;
+">
+	{% for post in latest_posts %}
+		<li style="
+			color: #6bbbc9;
+			margin-bottom: 10px;
+			line-height: 18px;
+			border-bottom: 1px solid #ccc;
+		">
+			<a href="{{ post.get_absolute_url }}">
+				{{ post.title }}
+			</a>
+		</li>
+	{% endfor %}
+</ul>
