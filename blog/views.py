@@ -91,6 +91,7 @@ def post_detail(request, year, month, day, post):
 	comments = post.user_comments.filter(active=True)
 	#print(post.user_comments)
 	new_comment = None
+	comment_form = None
 
 	if request.method == 'POST':
 		comment_form = CommentForm(data=request.POST)
@@ -98,6 +99,8 @@ def post_detail(request, year, month, day, post):
 			new_comment = comment_form.save(commit=False)
 			new_comment.post = post
 			new_comment.save()
+
+		comment_form = CommentForm()
 	else:
 		comment_form = CommentForm()
 
@@ -193,7 +196,7 @@ def login_user(request):
 		password = request.POST['password']
 		user = authenticate(username=username,
 							password=password)
-			
+
 		if user is not None:
 			login(request, user)
 			print(f'{user} was logged in successfully!')
@@ -208,12 +211,20 @@ def login_user(request):
 	return render(request,
 				  'blog/auth/login.html',
 				  {'form': form})
-				  
+
 
 def logout_user(request):
 	logout(request)
 	return redirect('/blog/login/')
 
 
-
-
+def profile(request):
+	user = request.user
+	post = Post.objects.filter(author=user)
+	image = post.first().profile_image
+	search_form = SearchForm()
+	return render(request,
+				  'blog/auth/profile.html',
+				  {'user': user,
+				   'image': image,
+				   'search_form': search_form})

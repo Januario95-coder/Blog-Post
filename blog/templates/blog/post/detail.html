@@ -56,12 +56,9 @@
 
 
 		{% for comment in comments %}
-			<div class="comment" style="padding:10px;
-									background:#bbcca2;
-									border-radius:5px;
-									margin-bottom: 6px;">
+			<div class="comment">
 				<p class="info">
-					Comment {{ forloop.counter }} by {{ comment.name }}
+					Comment {{ forloop.counter }} by {{ comment.name }}.
 					{{ comment.created }}
 				</p>
 				{{ comment.body|linebreaks }}

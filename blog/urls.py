@@ -1,4 +1,4 @@
-from django.urls import path 
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import views
 from .feeds import LatestPostsFeed
@@ -18,5 +18,6 @@ urlpatterns = [
 		path('feed/', LatestPostsFeed(), name='post_feed'),
 	path('search/', login_required(views.post_search), name='post_search'),
 	path('login/', views.login_user, name='login_user'),
-	path('logout/', views.logout_user, name='logout_user')
+	path('logout/', views.logout_user, name='logout_user'),
+	path('profile/', views.profile, name='profile'),
 ]

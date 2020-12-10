@@ -1,0 +1,74 @@
+{% load static %}
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+<!ENCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Posts{% endblock %}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link = rel="stylesheet" href='{% static "css/blog.css" %}'>
+        <script src='{% static "css/jquery-3.5.1.js" %}'></script>
+    </head>
+    <body>
+
+        <div class="container">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "blog:post_list" %}">Homepage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <form class="nav-item" action="." method="get">
+                            {{ search_form.query }}
+                            <input class="submission" type="submit" value="Search">
+                        </form>
+                    </ul>
+                </div>
+            </nav>
+
+
+
+            <div class="main">
+                <div class="main-left">
+                    <img src="{{ image.url }}" alt="">
+                    <p>{{ user }}</p>
+                    <p>{{ user.first_name }}</p>
+                    <div class="image-author-name">
+        <div class="image-author-name-left">
+            <img src="{{ image.url }}">
+        </div>
+        <div class="image-author-name-right">
+            <p>
+                Name:
+                    {{ user.first_name }}
+                    {{ user.last_name }}
+                <br>
+                <span>Email: {{ user.email }}</span>
+            </p>
+
+        </div>
+    </div>
+                </div>
+
+                <div class="main-right">
+
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
